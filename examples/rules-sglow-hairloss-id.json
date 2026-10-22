@@ -1,0 +1,77 @@
+{
+ "angles": [
+  [
+   "Hero static: Poster 6 (multi-benefit)",
+   "^poster 6"
+  ],
+  [
+   "Safety / side effects",
+   "efek samping|aman |aman$|aman gak|keamanan|kemanan|kontraindikasi|perhatikan apa|masih bingung"
+  ],
+  [
+   "Price / urgency / offer",
+   "gratis ongkir|beli 1|promo|diskon|sekarang vs nanti|masih mikir|mahal|harus sekarang|ragu mau mulai|remake ragu"
+  ],
+  [
+   "Social proof: many start",
+   "banyak yang baru mulai"
+  ],
+  [
+   "Proof: testimonial / unboxing",
+   "testimoni|before after|unboxing|ugc|beneran|settingan|hijaber|skrip"
+  ],
+  [
+   "Comparison / tried-everything",
+   "beda|produk lain|tidak sam|permen sekecil|tablet ini|treatment|coba banyak|bukan karena|50 juta"
+  ],
+  [
+   "Results timeline",
+   "berapa lama|hasil|3 bulan|90 hari|1 minggu|tumbuh|konsist|tebal"
+  ],
+  [
+   "Ingredients / how it works",
+   "bahan|kandungan|alami|kimia"
+  ],
+  [
+   "Trust: BPOM / halal / ori",
+   "bpom|halal|asli|palsu|event wellous|legalitas"
+  ],
+  [
+   "How to use",
+   "cara konsumsi|butir|tablet sehari"
+  ],
+  [
+   "Problem-aware hook (rontok)",
+   "rontok|kebotakan|garis rambut|keluhan|baby hair|menipis|tipis|keramas|rambut kuat|botak|si kecil|postpartum"
+  ]
+ ],
+ "avatars": [
+  [
+   "Postpartum mother",
+   "si kecil|postpartum|melahirkan|ibu baru"
+  ],
+  [
+   "Hijab wearer",
+   "hijab"
+  ],
+  [
+   "Spent on salon treatments",
+   "treatment|50 juta"
+  ],
+  [
+   "Tried other products",
+   "produk lain|coba banyak|tidak sam|ganti-ganti|bukan karena"
+  ],
+  [
+   "Receding hairline / balding",
+   "kebotakan|garis rambut|botak"
+  ],
+  [
+   "Thinning hair, wants thicker",
+   "tipis|menipis|tebal|baby hair"
+  ]
+ ],
+ "fields": [
+  "name"
+ ]
+}

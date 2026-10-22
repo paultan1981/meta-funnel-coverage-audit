@@ -1,0 +1,313 @@
+<title>{{ACCOUNT_SHORT}} Funnel Coverage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,400..800&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --ground:#ffffff; --surface:#f7f5f6; --ink:#1c1a1f; --muted:#68616d; --line:#e6e1e5;
+  --accent:#a3161b; --accent-soft:#fbeeee;
+  --stop:#b42318; --stop-bg:#fdecea; --watch:#9a5b00; --watch-bg:#fdf3e1; --keep:#0b6e3f; --keep-bg:#e6f4ec; --test:#3d4a63; --test-bg:#eef1f6;
+  --display:"Archivo",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#141216; --surface:#1e1b21; --ink:#f1edf2; --muted:#a8a0ad; --line:#332e37;
+    --accent:#f0646b; --accent-soft:#3a1d20;
+    --stop:#ff8a80; --stop-bg:#3d1c1a; --watch:#f5b94f; --watch-bg:#3a2c12; --keep:#6fd39c; --keep-bg:#163222; --test:#b7c3dc; --test-bg:#232a38;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#141216; --surface:#1e1b21; --ink:#f1edf2; --muted:#a8a0ad; --line:#332e37;
+  --accent:#f0646b; --accent-soft:#3a1d20;
+  --stop:#ff8a80; --stop-bg:#3d1c1a; --watch:#f5b94f; --watch-bg:#3a2c12; --keep:#6fd39c; --keep-bg:#163222; --test:#b7c3dc; --test-bg:#232a38;
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font:400 16px/1.55 var(--display);padding-inline:20px;padding-block:28px 56px}
+.wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:44px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-size:clamp(34px,7vw,52px);line-height:1.02;font-weight:800;font-stretch:78%;letter-spacing:-.01em}
+h2{font-size:22px;font-weight:750;font-stretch:85%}
+h3{font-size:17px;font-weight:750;font-stretch:90%}
+p{margin:0}
+.eyebrow{font:600 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.lede{color:var(--muted);max-width:66ch;margin-top:12px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:16px;font:500 13px/1.4 var(--mono);color:var(--muted)}
+section{display:flex;flex-direction:column;gap:16px}
+.sec-note{color:var(--muted);max-width:68ch}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* verdict */
+.verdict{background:var(--accent-soft);border-radius:14px;padding:22px 24px;display:flex;flex-direction:column;gap:10px}
+.verdict .call{font-size:clamp(22px,4vw,28px);font-weight:800;font-stretch:85%;color:var(--accent);line-height:1.15}
+.verdict ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+
+/* ad-set scoreboard */
+.board{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px}
+.tile{border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.tile .k{font:600 11.5px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tile .v{font:600 26px/1.1 var(--mono);font-variant-numeric:tabular-nums}
+.tile .s{font-size:14px;color:var(--muted)}
+.tile.bad .v{color:var(--stop)} .tile.ok .v{color:var(--watch)} .tile.good .v{color:var(--keep)}
+
+/* matrix */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 11.5px/1.25 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--surface)}
+tr:last-child td{border-bottom:0}
+.matrix{min-width:720px}
+.matrix td:first-child{width:200px}
+.stage b{display:block;font-weight:700}
+.stage span{display:block;color:var(--muted);font-size:13.5px;margin-top:2px}
+.cell{display:flex;flex-wrap:wrap;gap:6px}
+.ad{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;line-height:1.25;border-radius:7px;padding:5px 8px}
+.ad i{font-style:normal;font:600 10.5px/1 var(--mono);letter-spacing:.04em;text-transform:uppercase;opacity:.85}
+.ad.proven{background:var(--keep-bg);color:var(--keep)}
+.ad.testing{background:var(--test-bg);color:var(--test)}
+.ad.failing{background:var(--watch-bg);color:var(--watch)}
+.ad.gap{background:transparent;color:var(--stop);border:1.5px dashed var(--stop);font-weight:650}
+.legend{display:flex;flex-wrap:wrap;gap:8px}
+.other{min-width:640px}
+
+/* gaps */
+.gaps{list-style:none;margin:0;padding:0;counter-reset:g;display:flex;flex-direction:column}
+.gaps li{counter-increment:g;display:grid;grid-template-columns:40px 1fr;gap:4px 14px;padding:16px 0;border-top:1px solid var(--line)}
+.gaps li::before{content:counter(g);font:600 22px/1 var(--mono);color:var(--accent);padding-top:2px}
+.gaps .what{font-weight:700;font-size:17px}
+.gaps .ev{color:var(--muted);font-size:15px;margin-top:4px}
+.gaps .fix{margin-top:8px;font-size:15px}
+.gaps .fix b{font-weight:650}
+
+/* sop */
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px}
+.rule{background:var(--surface);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.rule .r{font-weight:650}
+.rule p:not(.r){color:var(--muted);font-size:14.5px}
+.code{font:500 13.5px/1.5 var(--mono);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;overflow-x:auto;white-space:pre}
+.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.steps li::marker{font-family:var(--mono);color:var(--accent);font-weight:600}
+.ad.dup{background:transparent;color:var(--muted);border:1px solid var(--line)}
+.summary{background:var(--surface);border-radius:14px;padding:22px 24px;display:flex;flex-direction:column;gap:18px}
+.summary h3{font-size:15px;font-weight:700;font-stretch:90%;text-transform:uppercase;letter-spacing:.06em;color:var(--accent)}
+.summary ul,.summary ol{margin:6px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.summary .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:18px}
+.tline{font-size:16px;line-height:1.5;padding:12px 14px;border-left:3px solid var(--accent);background:var(--ground);border-radius:0 10px 10px 0}
+.ladder{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.ladder span{font:600 12.5px/1 var(--mono);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 8px}
+footer{color:var(--muted);font-size:14px;border-top:1px solid var(--line);padding-top:18px}
+</style>
+
+<main class="wrap">
+  <header>
+    <p class="eyebrow">Audit + SOP · Meta ads · {{ACCOUNT_NAME}}</p>
+    <h1 style="margin-top:12px">{{ACCOUNT_SHORT}} Funnel Coverage</h1>
+    <p class="lede">{{ONE_PARAGRAPH: who buys {{PRODUCT}}, the question this page answers (does every buyer see an ad made for their step, and does the account follow up the interested), and what the page contains.}}</p>
+    <div class="meta"><span>Audit {{DATE}}</span><span>Act {{ACCOUNT_ID}} · {{MARKET}} · {{CURRENCY}}</span><span>Data: Meta-reported, 7 / 30 / 90 days</span></div>
+    <p class="sec-note" style="margin-top:14px"><b>How this account sells:</b> {{objective + optimisation event + destination (website pixel / WhatsApp CRM-pushed / messaging), what is and isn't tracked, product one-liner, average order}}</p>
+  </header>
+
+  <!-- 1 · VERDICT -->
+  <section aria-labelledby="t-verdict">
+    <h2 id="t-verdict">Verdict</h2>
+    <div class="verdict">
+      <p class="call">{{ONE SENTENCE: the single biggest truth about this account}}</p>
+      <ul>
+        <li>{{finding with numbers}}</li>
+        <!-- 4–6 bullets, each a finding backed by spend / sales / ROAS -->
+      </ul>
+    </div>
+    <div class="board">
+      <!-- tile classes: bad (ROAS < 1.5) · ok (1.5–2) · good (≥ 2) -->
+      <div class="tile bad"><span class="k">90 days</span><span class="v">{{ROAS}}</span><span class="s">ROAS on {{spend}} · {{n}} sales</span></div>
+      <div class="tile ok"><span class="k">30 days</span><span class="v">{{ROAS}}</span><span class="s">ROAS on {{spend}} · {{n}} sales</span></div>
+      <div class="tile ok"><span class="k">7 days</span><span class="v">{{ROAS}}</span><span class="s">ROAS on {{spend}} · {{n}} sales</span></div>
+      <div class="tile bad"><span class="k">{{worst campaign}} · 7 days</span><span class="v">{{ROAS}}</span><span class="s">{{spend}} ({{share}} of spend) · {{n}} sales</span></div>
+    </div>
+    <p class="sec-note">{{This week: which campaigns carry it, which take the most for the least.}}</p>
+  </section>
+
+  <!-- 2 · TARGET  (numbers from scripts/target_math.py) -->
+  <section aria-labelledby="t-target">
+    <h2 id="t-target">Target: RM100k sales a month at ROAS 2</h2>
+    <div class="board">
+      <div class="tile"><span class="k">Sales target</span><span class="v">RM100k</span><span class="s">a month{{, ≈ local at FX}}</span></div>
+      <div class="tile"><span class="k">Max ad spend</span><span class="v">RM50k</span><span class="s">a month, about RM1,667 a day</span></div>
+      <div class="tile"><span class="k">Orders needed</span><span class="v">~{{orders}}</span><span class="s">a month (~{{per_day}} a day) at the {{AOV}} average order</span></div>
+      <div class="tile"><span class="k">Max cost per sale</span><span class="v">{{max_cpa}}</span><span class="s">half the average order</span></div>
+    </div>
+    <div class="tbl">
+      <table class="other">
+        <thead><tr><th>Measure</th><th>Today</th><th>Target</th><th>Gap</th></tr></thead>
+        <tbody><!-- rows printed by target_math.py --></tbody>
+      </table>
+    </div>
+    <p class="sec-note">"Today" is the last 7 days at a monthly pace: {{spend7}} spent for {{sales7}} sales and {{value7}} in sales. Over 30 days it was {{...}}.</p>
+    <h3>How to get there: two 30-day sprints</h3>
+    <ol class="steps">
+      <li><b>Sprint 1, reach ROAS 2 at today's spend.</b> {{the top 2–3 fix-list items}}</li>
+      <li><b>Sprint 2, climb a gated ladder.</b> Raise budget 20% every 3 days while the 7-day ROAS stays at 2 or above; hold between 1.8 and 2; drop back one step if it sits below 1.8 for 3 days. From {{start}} to {{end}} a day is {{n}} steps, about {{days}} days:
+        <div class="ladder"><!-- <span>RM566</span> … printed by target_math.py --></div></li>
+      <li><b>Feed the ladder with creative.</b> At the target spend, plan 6–8 new ads a week, each replacing a stopped one; at today's spend, {{3–4}}.</li>
+      <li><b>The account-specific lever: {{lever}}.</b> {{the one number that must move before budget does}}</li>
+    </ol>
+    <p class="sec-note">{{Earliest full month at target, and the assumption behind it.}}</p>
+  </section>
+
+  <!-- 3 · MEN VS WOMEN  (numbers from scripts/gender_split.py) -->
+  <section aria-labelledby="t-gender">
+    <h2 id="t-gender">Men vs women: ROAS by period</h2>
+    <p class="sec-note">Meta-reported purchases, split by the gender of the person who clicked. Pulled {{DATE}}.</p>
+    <div class="tbl">
+      <table class="other">
+        <thead><tr><th>Period</th><th>Men's spend</th><th>Men's share</th><th>Men's sales</th><th>Men's ROAS</th><th>Women's sales</th><th>Women's ROAS</th></tr></thead>
+        <tbody><!-- 90 / 30 / 7 day rows; bold the winning ROAS --></tbody>
+      </table>
+    </div>
+    <p class="sec-note"><b>By age (90 days):</b> {{best and worst gender × age cells with spend, sales, ROAS}}</p>
+    <p class="sec-note"><b>The call:</b> {{who to lean into, the split to test, sample-size caveat, clicker-gender caveat}}</p>
+  </section>
+
+  <!-- 4 · WHAT SELLS BY ANGLE  (scripts/tag_ads.py, 90 days) -->
+  <section aria-labelledby="t-sells">
+    <h2 id="t-sells">What sells: 90 days by angle</h2>
+    <p class="sec-note">{{N}} ads that spent money since {{date}}, live or paused, grouped by their main message. Rows with 0–9 sales show direction, not proof.</p>
+    <div class="tbl">
+      <table class="other">
+        <thead><tr><th>Angle</th><th>Spend</th><th>Share</th><th>Sales</th><th>ROAS</th><th>Cost per sale</th></tr></thead>
+        <tbody><!-- sorted by spend --></tbody>
+      </table>
+    </div>
+    <p class="sec-note"><b>Why the winner works:</b> {{quote its copy; name the person, the reason, the ease, the offer}}</p>
+  </section>
+
+  <!-- 5 · SUB-AVATAR -->
+  <section aria-labelledby="t-avatar">
+    <h2 id="t-avatar">Which sub-avatar to focus</h2>
+    <div class="tbl">
+      <table class="other">
+        <thead><tr><th>Who (90 days)</th><th>Spend</th><th>Sales</th><th>ROAS</th><th>Call</th></tr></thead>
+        <tbody>
+          <tr><td><b>{{sub-avatar}}</b></td><td class="num">{{}}</td><td class="num">{{}}</td><td class="num">{{}}</td><td><span class="ad proven">Focus</span></td></tr>
+          <!-- calls: proven=Focus/Core buyer · testing=Test · gap=Stop as lead hook/Exclude · failing=Not proven -->
+        </tbody>
+      </table>
+    </div>
+    <p class="sec-note"><b>The call:</b> {{the one person to lead with, in the customer's words}}</p>
+  </section>
+
+  <!-- 6 · COVERAGE MAP (live ads by decision step) -->
+  <section aria-labelledby="t-map">
+    <h2 id="t-map">Coverage map: the {{N}} live ads</h2>
+    <div class="legend">
+      <span class="ad proven">Selling</span><span class="ad testing">Live, unproven</span><span class="ad failing">Past its stop line</span><span class="ad gap">Gap</span>
+    </div>
+    <div class="tbl">
+      <table class="matrix">
+        <thead><tr><th>Step</th><th>Live ads (lifetime)</th></tr></thead>
+        <tbody>
+          <tr><td class="stage"><b>{{Step name}}</b><span>{{what this buyer thinks, in their words}}</span></td><td><div class="cell"><span class="ad proven">{{Ad}} <i>{{spend}} · {{sales}} · {{ROAS}}</i></span><span class="ad gap">{{what is missing}}</span></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="sec-note"><b>Copy problem:</b> {{how many live ads share a primary text; message match}}</p>
+  </section>
+
+  <!-- 6b · OBJECTIONS (one column per selling sub-avatar, or per market) -->
+  <section aria-labelledby="t-objections">
+    <h2 id="t-objections">What the {{focus buyer}} asks, and what answers it</h2>
+    <p class="sec-note">{{The sub-avatars in the columns, with 30-day sales and ROAS.}} "Fill from" names an ad in this account that already answers the question, live or paused. {{N of M}} gaps need a copy or a move, not a shoot.</p>
+    <div class="tbl">
+      <table class="other">
+        <thead><tr><th>What they ask</th><th>{{Sub-avatar 1}}</th><th>{{Sub-avatar 2}}</th><th>Fill from</th></tr></thead>
+        <tbody>
+          <tr><td>"{{objection in the buyer's words}}"</td>
+            <td><span class="ad proven">{{Live ad}} <i>{{spend}} · {{sales}} · {{ROAS}}</i></span></td>
+            <td><span class="ad gap">None</span></td>
+            <td>{{Paused/past ad + numbers + action: move to follow-up / re-edit / paste copy block}} · or "New shoot: {{one-line brief}}" · or <span class="ad proven">Covered</span></td></tr>
+          <!-- 6–8 rows: fit/too late · safe with medicine · does it work · how long · price/bundle · ori/pharmacy · how to buy -->
+        </tbody>
+      </table>
+    </div>
+    <p class="sec-note"><b>Why the empty rows aren't proof that objection ads fail:</b> {{they ran cold / under an old setup; fewer than 10 sales is direction, not proof; the one objection ad that sold; judge them in the follow-up set}}</p>
+  </section>
+
+  <!-- 7 · OFF / WATCH / KEEP -->
+  <section aria-labelledby="t-off">
+    <h2 id="t-off">Off, watch, keep</h2>
+    <div class="tbl">
+      <table class="other">
+        <thead><tr><th>Call</th><th>Ad (ad set · campaign)</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td><span class="ad gap">Off</span></td><td>{{}}</td><td>{{numbers vs the stop line}}</td></tr>
+          <tr><td><span class="ad failing">Watch</span></td><td>{{}}</td><td>{{the line it gets stopped at}}</td></tr>
+          <tr><td><span class="ad proven">Keep</span></td><td>{{}}</td><td>{{}}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 8 · COMPLETE THE FUNNEL (ranked by money at stake) -->
+  <section aria-labelledby="t-fix">
+    <h2 id="t-fix">Complete the funnel: ranked by money at stake</h2>
+    <ol class="gaps">
+      <li><div>
+        <p class="what">{{the fix, as an action}}</p>
+        <p class="ev">{{the evidence, with numbers}}</p>
+        <p class="fix"><b>Do:</b> {{exact build: ad set, audience, which ads, budget share}}</p>
+      </div></li>
+    </ol>
+  </section>
+
+  <!-- 9 · STOP RULES / SOP  (ladder printed by target_math.py) -->
+  <section aria-labelledby="t-sop">
+    <h2 id="t-sop">Stop rules for this account</h2>
+    <p class="sec-note">Average order {{AOV}}, so ROAS 2 means a sale may cost at most about {{max_cpa}}. Spend is lifetime per ad, or per concept when the same creative runs in several ad sets.</p>
+    <div class="tbl">
+      <table class="other">
+        <thead><tr><th>Checked at</th><th>Stop if</th></tr></thead>
+        <tbody><!-- rows --></tbody>
+      </table>
+    </div>
+    <p class="sec-note">Never pause an ad that sold in the last 7 days without a written reason. {{coverage rules + rhythm: daily stop check, Monday AAR redraws the map, weekly refill volume}}</p>
+  </section>
+
+  <!-- 10 · SUMMARY (always last; mirrors the chat recap) -->
+  <section aria-labelledby="t-summary">
+    <h2 id="t-summary">Summary</h2>
+    <div class="summary">
+      <p class="tline"><b>Target:</b> RM100k sales a month at ROAS 2 (max spend RM50k, ~{{orders}} orders). Today: {{pace}} a month at ROAS {{roas7}} (7-day pace), so {{gap}}× to go. Earliest full month at target: {{month}}.</p>
+      <div>
+        <h3>What we found</h3>
+        <ul>
+          <li><b>{{bold claim.}}</b> {{numbers}}</li>
+        </ul>
+      </div>
+      <div class="two">
+        <div>
+          <h3>Focus</h3>
+          <ul>
+            <li>{{}}</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Turn off · watch</h3>
+          <ul>
+            <li><b>Off:</b> {{}}</li>
+            <li><b>Watch:</b> {{}}</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <h3>To complete the funnel</h3>
+        <ol>
+          <li>{{}}</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <footer>{{How ads were placed (ad name, ad set topic, copy). Data source note. Companion pages.}}</footer>
+</main>

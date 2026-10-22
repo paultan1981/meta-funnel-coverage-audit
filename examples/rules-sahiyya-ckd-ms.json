@@ -1,0 +1,22 @@
+{
+ "_note": "Sahiyya+ kidney accounts (WP-09, WP-12, Afyaa 3). Malay ad names. Order matters: first match wins. Built from the WP-09 audit, 19 Oct 2026.",
+ "fields": ["name", "adset_name"],
+ "angles": [
+  ["Offer / price / bundle", "promo|payday|sale|jimat|diskaun|30%|harga|flash|8\\.8|berbaloi|terhad|b3f1|beli 2|beli 3|percuma|totebag|merdeka|mega|pakej|cod"],
+  ["Trust: ori / HQ / farmasi", "\\bori\\b|hq|original|farmasi|palsu|fake|kapsul palsu|tiada di farmasi"],
+  ["Objection: price / timing / dose", "mahal|nantilah|tunggu|cukup ke|kenapa kena beli|bayar lebih|bazir|sembarangan"],
+  ["How it works: formula / ramuan", "formula|ramuan|ingredient|bahan|liquid|kenapa 3|3 ramuan|bawang|vs sahiyya"],
+  ["Proof: testimonial / UGC", "testi|ugc|feedback|cikgu|makcik|pakcik|kak |mak |kassim|kamarul|shamsiah|salleh|chloe|kena stop"],
+  ["Diagnosed: stage / eGFR / dialysis", "stage ?[2-5]|tahap ?[2-5]|thp ?[2-5]|dialisis|kreatinin|egfr|ckd|buah pinggang rosak|bp rosak|boleh sembuh|ada harapan|terlambat"],
+  ["Symptom hook (undiagnosed)", "berbuih|buih|bengkak|kebas|kencing|simptom|tanda awal|pinggang|mengantuk|kaki"],
+  ["Off-scope: diabetes / BP diet tips", "kencing ?manis|gula|insulin|3 ?serangkai|roti|tip|durian|garam"]
+ ],
+ "avatars": [
+  ["Diabetes / gula (other campaign)", "kencing ?manis|gula|insulin|pankreas|hba1c|glukos|luka|glp-1"],
+  ["Afraid of 3 Serangkai", "3 ?serangkai"],
+  ["Stage 4–5 / afraid of dialysis", "dialisis|stage ?4|stage ?5|thp ?4|tahap ?4|stage45|t3-t5"],
+  ["Diagnosed stage 2–3", "stage ?2|stage ?3|tahap ?3|thp ?3|kreatinin|egfr|ckd ?sedar|tak sakit apa|senyap|boleh sembuh|patah balik|ada harapan|beza tahap|3a kepada"],
+  ["Family / carer who pays", "anak|suami|isteri|mak ?ayah|keluarga|pesara|cucu"],
+  ["Has symptoms, not diagnosed", "berbuih|bengkak|kebas|simptom|mengantuk|protein dalam air|pinggang|buih|tanda awal"]
+ ]
+}
